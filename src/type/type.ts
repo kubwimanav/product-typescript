@@ -1,15 +1,11 @@
 export interface Products { 
-
     
         id: Number;
         title: String;
         description: String;
         price: Number;
         discountPercentage: Number;
-    rating: {
-        rate: Number;
-        count: Number;
-        };
+    rating: Number;
     stock: Number;
     category: String;
         tags: String[];
@@ -40,13 +36,20 @@ export interface Products {
             qrCode: String;
         };
         thumbnail: String;
-        image: String;
+    images: String;
+
 }
+
     
 export interface Category {
     name: String;
     slug: String;
     url: String;
+}
+
+export interface Type{
+    id: string;
+    title: String;
 }
 
     
