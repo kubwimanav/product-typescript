@@ -1,34 +1,34 @@
 export interface Products { 
     
-        id: Number;
+        id: number;
         title: String;
         description: String;
-        price: Number;
-        discountPercentage: Number;
-    rating: Number;
-    stock: Number;
-    category: String;
+        price: number;
+        discountPercentage: number;
+    rating: number;
+    stock: number;
+    category: string;
         tags: String[];
         brand: String;
-        sku: String;
-        weight: Number;
+        sku: string;
+        weight: number;
         dimensions: {
-            width: Number;
-            height: Number;
-            depth: Number;
+            width: number;
+            height: number;
+            depth: number;
         };
         warrantyInformation: String;
         shippingInformation: String;
         availabilityStatus: String;
         reviews: {
-            rating: Number;
+            rating: number;
             comment: String;
             date: String;
             reviewerName: String;
             reviewerEmail: String;
         } [];
         returnPolicy: String;
-        minimumOrderQuantity: Number;
+        minimumOrderQuantity: number;
         meta: {
             createdAt: String;
             updatedAt: String;
@@ -52,4 +52,29 @@ export interface Type{
     title: String;
 }
 
+export interface Type {
+
+  carts: [
+    {
+      id: number;
+      products: [
+        {
+          id: number;
+          title: string;
+          price: number;
+          quantity: number;
+          total: number;
+          discountPercentage: number;
+          discountedTotal: number;
+          thumbnail: string;
+        }
+      ];
+      total: number;
+      discountedTotal: number;
+      userId: number;
+      totalProducts: number;
+      totalQuantity: number;
+    }
+  ];
+}
     

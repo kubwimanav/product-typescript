@@ -90,7 +90,6 @@ const ProductDetail: React.FC = () => {
   const renderStars = (rating: number) => {
     const stars = [];
     const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
 
     for (let i = 0; i < 5; i++) {
       if (i < fullStars) {

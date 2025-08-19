@@ -4,10 +4,10 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
 } from "react-router-dom";
 import Product from "./component/Product";
 import ProductDetail from "./component/SingleProduct";
+import CartComponent from "./component/cart/cart";
 
 const App: React.FC = () => {
   return (
@@ -23,6 +23,8 @@ const App: React.FC = () => {
               </div>
             }
           />
+          <Route path="/cart" element={<CartComponent />} />
+
           <Route path="/product/:id" element={<ProductDetail />} />
         </Routes>
       </div>

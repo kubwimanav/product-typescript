@@ -72,76 +72,78 @@ const EditProduct: React.FC<Props> = ({ productId, onSubmit, onCancel }) => {
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-xl font-semibold mb-4">Edit Product</h2>
+    <div className="fixed inset-0 bg-[rgba(49,49,49,0.8)] bg-opacity-80 flex justify-center items-start sm:items-center z-1000  ">
+      <div className="rounded-lg  w-full max-w-md ">
+        <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+          <h2 className="text-xl font-semibold mb-4">Edit Product</h2>
 
-        {fetchLoading ? (
-          <div className="text-center py-4">
-            <p>Loading product data...</p>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label
-                htmlFor="productId"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Product ID
-              </label>
-              <input
-                type="text"
-                id="productId"
-                value={productId}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
-              />
+          {fetchLoading ? (
+            <div className="text-center py-4">
+              <p>Loading product data...</p>
             </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="title"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Title *
-              </label>
-              <input
-                type="text"
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter product title"
-                required
-                disabled={loading}
-              />
-            </div>
-
-            {error && (
-              <div className="mb-4 text-red-600 text-sm bg-red-50 p-2 rounded">
-                {error}
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label
+                  htmlFor="productId"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Product ID
+                </label>
+                <input
+                  type="text"
+                  id="productId"
+                  value={productId}
+                  disabled
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
+                />
               </div>
-            )}
 
-            <div className="flex gap-3 justify-end">
-              <button
-                type="button"
-                onClick={onCancel}
-                className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-                disabled={loading}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={loading || !title.trim()}
-                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                {loading ? "Updating..." : "Update Product"}
-              </button>
-            </div>
-          </form>
-        )}
+              <div className="mb-4">
+                <label
+                  htmlFor="title"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Title *
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Enter product title"
+                  required
+                  disabled={loading}
+                />
+              </div>
+
+              {error && (
+                <div className="mb-4 text-red-600 text-sm bg-red-50 p-2 rounded">
+                  {error}
+                </div>
+              )}
+
+              <div className="flex gap-3 justify-end">
+                <button
+                  type="button"
+                  onClick={onCancel}
+                  className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                  disabled={loading}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading || !title.trim()}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  {loading ? "Updating..." : "Update Product"}
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
       </div>
     </div>
   );

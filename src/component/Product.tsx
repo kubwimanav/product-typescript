@@ -1,6 +1,6 @@
 // src/components/productsList.tsx
 import React, { useEffect, useState } from "react";
-import { MdEdit, MdDelete } from "react-icons/md";
+import { MdEdit, MdDelete, MdSearch, MdClear } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 import api from "../axios/api";
@@ -50,6 +50,7 @@ const Product: React.FC<Props> = ({
 }) => {
   const navigate = useNavigate();
   const [products, setProducts] = useState<Products[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Products[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -59,6 +60,41 @@ const Product: React.FC<Props> = ({
   );
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  // Search function
+  const filterProducts = (
+    productList: Products[],
+    search: string,
+    category: string
+  ) => {
+    let filtered = productList;
+
+    // Filter by category first
+    if (category !== "all") {
+      filtered = filtered.filter((product) => product.category === category);
+    }
+
+    // Then filter by search term
+    if (search.trim() !== "") {
+      const searchLower = search.toLowerCase().trim();
+      filtered = filtered.filter(
+        (product) =>
+          product.title.toLowerCase().includes(searchLower) ||
+          product.category.toLowerCase().includes(searchLower) ||
+          product.brand?.toLowerCase().includes(searchLower) ||
+          product.description?.toLowerCase().includes(searchLower)
+      );
+    }
+
+    return filtered;
+  };
+
+  // Update filtered products when search term, category, or products change
+  useEffect(() => {
+    const filtered = filterProducts(products, searchTerm, selectedCategory);
+    setFilteredProducts(filtered);
+  }, [products, searchTerm, selectedCategory]);
 
   // Fetch products by category
   const fetchProductsByCategory = async (category: string) => {
@@ -132,6 +168,14 @@ const Product: React.FC<Props> = ({
     setSelectedCategory(category);
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const clearSearch = () => {
+    setSearchTerm("");
+  };
+
   const formatCategoryName = (category: string) => {
     return category
       .split("-")
@@ -153,7 +197,7 @@ const Product: React.FC<Props> = ({
   };
 
   const handleEdit = (id: number, e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent navigation when clicking edit
+    e.stopPropagation();
     setSelectedProductId(id);
     if (onSelectproducts && typeof onSelectproducts === "function") {
       onSelectproducts(id);
@@ -217,6 +261,28 @@ const Product: React.FC<Props> = ({
         </button>
       </div>
 
+      {/* Search Input */}
+      <div className="relative mb-4">
+        <div className="relative">
+          <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg" />
+          <input
+            type="text"
+            placeholder="Search products by name, category, brand, or description..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+          {searchTerm && (
+            <button
+              onClick={clearSearch}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <MdClear className="text-lg" />
+            </button>
+          )}
+        </div>
+      </div>
+
       {/* Category Filter */}
       <div className="flex justify-between items-center">
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -236,20 +302,38 @@ const Product: React.FC<Props> = ({
         </select>
       </div>
 
+      {/* Search Results Info */}
+      {searchTerm && (
+        <div className="text-sm text-gray-600 bg-blue-50 p-2 rounded-md">
+          {filteredProducts.length > 0
+            ? `Found ${filteredProducts.length} product${
+                filteredProducts.length !== 1 ? "s" : ""
+              } matching "${searchTerm}"`
+            : `No products found matching "${searchTerm}"`}
+        </div>
+      )}
+
       {loading ? (
         <div className="flex justify-center items-center p-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
           <span className="ml-2 text-gray-600">Loading products...</span>
         </div>
-      ) : products.length === 0 ? (
-        <p className="text-center text-gray-500 p-4">No products found</p>
+      ) : filteredProducts.length === 0 ? (
+        <p className="text-center text-gray-500 p-4">
+          {searchTerm || selectedCategory !== "all"
+            ? "No products found matching your search criteria"
+            : "No products found"}
+        </p>
       ) : (
         <>
           <div className="mb-2 text-sm text-gray-600">
-            Showing {products.length} product{products.length !== 1 ? "s" : ""}
+            Showing {filteredProducts.length} product
+            {filteredProducts.length !== 1 ? "s" : ""}
+            {products.length !== filteredProducts.length &&
+              ` of ${products.length} total`}
           </div>
           <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <div
                 className="border-gray-300 font-serif shadow-lg border rounded-xl flex gap-1 flex-col justify-between items-center pb-2 hover:shadow-xl transition-all cursor-pointer transform hover:scale-105"
                 onClick={() => handleProductClick(Number(product.id))}
