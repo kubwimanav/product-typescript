@@ -15,7 +15,7 @@ const ProductDetails: React.FC<Props> = ({ productId, onUpdated, onClose }) => {
   const [saving, setSaving] = useState(false); // saving
   const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [refreshTrigger, setRefreshTrigger] = useState(0); // Force refresh trigger
+  const [refreshTrigger] = useState(0); // Force refresh trigger
 
   // Fetch product when productId changes or refreshTrigger changes
   useEffect(() => {
@@ -91,7 +91,6 @@ const ProductDetails: React.FC<Props> = ({ productId, onUpdated, onClose }) => {
       };
 
       // Update the product
-      const res = await api.put(`/${productId}`, updateData);
 
       // Create the updated product object with our edited data
       const updatedProduct = {

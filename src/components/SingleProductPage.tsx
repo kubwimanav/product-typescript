@@ -13,6 +13,7 @@ import type { Product } from "../types/productTypes";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import api from "../api/api";
+import ProductDetails from "./ProductDetails";
 
 
 const SingleProductPage: React.FC = () => {
@@ -22,7 +23,7 @@ const SingleProductPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [quantity, setQuantity] = useState(1);
+  const [quantity] = useState(1);
   const [addingToCart, setAddingToCart] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [cartMessage, setCartMessage] = useState<string | null>(null);
@@ -91,24 +92,6 @@ const SingleProductPage: React.FC = () => {
     }
   };
 
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: product?.title,
-          text: `Check out this product: ${product?.title}`,
-          url: window.location.href,
-        });
-      } catch (error) {
-        console.error("Error sharing:", error);
-      }
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      setCartMessage("Product link copied to clipboard!");
-      setTimeout(() => setCartMessage(null), 2000);
-    }
-  };
-
   const renderStars = (rating: number) => {
     const stars = [];
     const fullStars = Math.floor(rating);
@@ -124,9 +107,7 @@ const SingleProductPage: React.FC = () => {
     return stars;
   };
 
-  const calculateDiscountedPrice = (price: number, discount: number) => {
-    return price - (price * discount) / 100;
-  };
+;
 
   if (loading) {
     return (
@@ -394,6 +375,7 @@ const SingleProductPage: React.FC = () => {
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <ProductDetails
+              
                 productId={product.id}
                 onUpdated={() => {
                   setShowEditModal(false);

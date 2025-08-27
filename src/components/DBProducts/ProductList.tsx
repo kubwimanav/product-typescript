@@ -44,7 +44,7 @@ const ProductList: React.FC<Props> = ({
   const [showCart, setShowCart] = useState(false);
   const { cart, addToCart } = useCart();
   const [showAddProduct, setShowAddProduct] = useState(false);
-  const [newProduct, setNewProduct] = useState<Product | null>(null);
+  const [, setNewProduct] = useState<Product | null>(null);
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
 

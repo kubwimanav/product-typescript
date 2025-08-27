@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   MdLogin,
@@ -20,68 +20,20 @@ interface Props {
 }
 
 const Navbar: React.FC<Props> = ({
-  refreshKey,
   onProductUpdated,
 }) => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [ setCategories] = useState<string[]>([]);
-  const [selectedCategory] = useState<string>("all");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  // Removed unused products state
+  // Removed unused setCategories state
+  // Removed unused loading state
+  const [error] = useState<string | null>(null);
  
   const [cartError] = useState<string | null>(null);
   const [showCart, setShowCart] = useState(false);
   const { cart } = useCart();
   const [showAddProduct, setShowAddProduct] = useState(false);
-  const [newProduct, setNewProduct] = useState<Product | null>(null);
+  // Removed unused newProduct state
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
-
- 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        let res;
-
-        if (selectedCategory !== "all") {
-          const response = await fetch(
-            `https://dummyjson.com/products/category/${selectedCategory}`
-          );
-          const data = await response.json();
-          res = { data };
-        } else {
-          // Fetch all products with a higher limit to show more products
-          const response = await fetch(
-            "https://dummyjson.com/products?limit=100"
-          );
-          const data = await response.json();
-          res = { data };
-        }
-
-        const fetchedProducts = res.data.products.map((p: any) => ({
-          id: p.id,
-          title: p.title,
-          category: p.category,
-          price: p.price,
-          discountPercentage: p.discountPercentage,
-          images: p.images,
-          stock: p.stock,
-          rating: p.rating,
-          description: p.description,
-        }));
-        setProducts(fetchedProducts);
-      } catch (err) {
-        console.error(err);
-        setError("Failed to load products");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProducts();
-  }, [refreshKey, selectedCategory]);
-
  
   const handleLogin = () => {
     navigate("/");
@@ -100,8 +52,12 @@ const Navbar: React.FC<Props> = ({
 
 
 
-  if (loading) return <p className="text-center p-4">Loading products...</p>;
+  // Removed loading indicator since loading state is unused
   if (error) return <p className="text-center text-red-500 p-4">{error}</p>;
+
+  function setNewProduct(_product: Product) {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <div className="bg-white flex flex-col gap-3 justify-center p-4 rounded shadow">
@@ -179,9 +135,8 @@ const Navbar: React.FC<Props> = ({
             <AddProduct
               onProductAdded={(product) => {
                 setNewProduct(product);
-                setProducts((prev) => [product, ...prev]);
+                // Removed setProducts since products state is unused
                 setShowAddProduct(false);
-                // Call onProductUpdated if it exists
                 if (onProductUpdated) {
                   onProductUpdated();
                 }

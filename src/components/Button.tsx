@@ -11,10 +11,7 @@ interface ButtonProps {
   variant?: ButtonVariant;
 }
 
-const variantClasses: Record<ButtonVariant, string> = {
-  primary: "bg-primaryColor-800 text-white hover:bg-primaryColor-700",
-  danger: "bg-red-600 text-white hover:bg-red-700",
-};
+
 
 const Button: React.FC<ButtonProps> = ({
   label,
