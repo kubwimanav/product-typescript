@@ -1,35 +1,43 @@
-// src/App.tsx
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
-import Product from "./component/Product";
-import ProductDetail from "./component/SingleProduct";
-import CartComponent from "./component/cart/cart";
 
-const App: React.FC = () => {
+
+// import ProductList from "./components/DBProducts/ProductList";
+
+// import CategoryPage from "./components/CategoryPage"
+
+
+
+//  import Login from "./pages/Login"
+// import ProductsPage from "./pages/ProductPage;
+ import AppRoutes from "./Routes/AppRoutes"
+import { BrowserRouter } from "react-router-dom"
+
+
+
+
+// import AddProduct from './components/AddProduct'
+
+
+
+
+
+function App() {
+ 
+
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-50">
-        <Routes>
-          {/* Products List Route */}
-          <Route
-            path="/"
-            element={
-              <div className="container mx-auto py-6">
-                <Product refreshKey={0} />
-              </div>
-            }
-          />
-          <Route path="/cart" element={<CartComponent />} />
+    <>
+      
+      {/* <AddProduct/>
+      <ProductList/>  */}
+       {/* <ProductsPage />  */}
+      {/* <Login/> */}
+       <BrowserRouter>
+      <AppRoutes/> 
+      
+    
+      </BrowserRouter>
+       
+    </>
+  )
+}
 
-          <Route path="/product/:id" element={<ProductDetail />} />
-        </Routes>
-      </div>
-    </Router>
-  );
-};
-
-export default App;
+export default App
